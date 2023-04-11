@@ -3,30 +3,30 @@ import studentsServices from "../services/students.services";
 
 const router = Router();
 
-router.get('/', (req: Request, res: Response) => {
-    const students = studentsServices.getAll();
+router.get('/', async (req: Request, res: Response) => {
+    const students = await studentsServices.getAll();
     res.send(students);
 });
 
-router.get('/:document', (req: Request, res: Response) => {
-    const student = studentsServices.getByDocument(req.params.document);
+router.get('/:document', async (req: Request, res: Response) => {
+    const student = await studentsServices.getByDocument(req.params.document);
     if (!student) {
         res.status(400).send({ message: "Estudante não encontrado!" });
     };
     res.status(200).send({ message: 'Estudante encontrado!' });
 });
 
-router.post('/', (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
     if (req.body.age < 18) {
         return res.status(400).send({ message: 'Não autorizado! Idade mínima é de 18 anos.' });
     }
-    studentsServices.create(req.body);
+    await studentsServices.create(req.body);
     res.status(201).send({ message: 'Estudante criado com sucesso!' });
 });
 
-router.delete('/remove/:document', (req: Request, res: Response) => {
+router.delete('/remove/:document', async (req: Request, res: Response) => {
     try {
-        studentsServices.remove(req.params.document);
+        await studentsServices.remove(req.params.document);
         res.send(200).send({ message: "Estudante removido com sucesso!!" })
     } catch (error: any) {
         res.status(400).send({ message: error.message });

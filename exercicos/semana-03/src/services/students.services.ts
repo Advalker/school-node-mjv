@@ -1,62 +1,30 @@
+import StudentRepository from "../repositories/student.repository";
 import { Student } from "../models/student.models";
 
+
 class StudentsServices {
-    students: Array<Student> = [
-        {
-            name: 'Valker Souto',
-            email: 'valker@hotmal.com',
-            document: '61884506089',
-            password: '123456',
-            age: 22,
-            phone: '81975757589'
-        },
 
-        {
-            name: 'José Silva',
-            email: 'joser@hotmal.com',
-            document: '78119542061',
-            password: '654321',
-            age: 32
-        },
-
-        {
-            name: 'Aline Maria',
-            email: 'aline@hotmal.com',
-            document: '59384450006',
-            password: '000000',
-            age: 26
-        },
-    ];
 
     getAll() {
-        return this.students
+        return StudentRepository.getAll();
     }
 
     getByDocument(document: string) {
-        const student = this.students.find((std) => std.document === document);
-        return this.students
+        return StudentRepository.getByDocument(document);
     }
 
-    create(student: Student) {
-        this.students.push(student);
+    create(student: typeof Student) {
+        return StudentRepository.create(student);
 
     }
 
     remove(document: string) {
-        const studentIndex = this.students.findIndex((students) => students.document === document);
-        if (studentIndex === -1) {
-            throw new Error("Estudante não encontrado!");
-        }
-        this.students.splice(studentIndex, 1);
+        return StudentRepository.remove(document);
     }
 
-    update(document: string, student: Student) {
-        const studentIndex = this.students.findIndex((students) => students.document === document);
-        if (studentIndex === -1) {
-            throw new Error("Estudante não encontrado!");
-        };
+    update(document: string, student: Partial<typeof Student>) {
+        return StudentRepository.update(document, student)
 
-        this.students[studentIndex] = student;
     }
 }
 export default new StudentsServices();
